@@ -1,0 +1,63 @@
+.formSearsh {
+    width: 80%;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.formSearsh form {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 2fr 2fr 1fr;
+    gap: 10px;
+}
+.formSearsh form input{
+    padding: 6px ;
+    border-radius: none;
+}
+.formSearsh form button{
+    padding: 7px 5px;
+    border: none;
+    background-color: #f34;
+    color: #fff;
+    cursor: pointer;
+}
+
+.formSearsh form button:hover{
+    background-color: #f00;
+}
+
+.cardContainer {
+    width: 80%;
+    margin: 30px auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.card {
+
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+@media (max-width:768px) {
+    .cardContainer {
+
+        grid-template-columns: repeat(2, minmax(200px, 1fr));
+
+    }
+    .formSearsh form{
+    grid-template-columns: 2fr;
+
+    }
+}
+
+@media (max-width:600px) {
+    .cardContainer {
+
+        grid-template-columns: repeat(1, minmax(auto, 1fr));
+
+    }
+}
