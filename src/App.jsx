@@ -1,6 +1,6 @@
 import Client from 'predicthq';
 import { useEffect, useState } from 'react';
-import { SelectCountry } from "./Components/SelectCountry"
+import { SelectCountry } from "./Components/SelectCountry/SelectCountry"
 import FeatchData from "./Components/FeatchData"
 import { Cards } from "./Components/Cards/Cards";
 function App() {
@@ -13,17 +13,18 @@ function App() {
 
   function dataServerHandler(data) {
     // const filtring = data.results.filtr()
+    
     setDataServer(data.results);
   }
 
-  console.log(nameCountry);
 
 
   useEffect(() => {
+    console.log(nameCountry);
     if (nameCountry != "" && nameCountry.toLocaleLowerCase() != "all") {
-      FeatchData("https://api.predicthq.com/v1/events/?category=severe-weather&country=US", dataServerHandler)
+      FeatchData(`https://api.predicthq.com/v1/events/?category=severe-weather&country=${nameCountry}&limit=50`, dataServerHandler)
     } else {
-      FeatchData("https://api.predicthq.com/v1/events/?category=severe-weather&sort=-country&state=active", dataServerHandler)
+      FeatchData("https://api.predicthq.com/v1/events/?category=severe-weather&sort=-country&state=active&limit=50", dataServerHandler)
     }
   }, [nameCountry])
   // console.log(dataServer);
@@ -32,7 +33,7 @@ function App() {
   return (
     <>
       <SelectCountry nameCountres={nameCountryHandler}></SelectCountry>
-      <Cards datasServer={dataServer}></Cards>
+      <Cards datasServer={dataServer} ></Cards>
     </>
   );
 }
