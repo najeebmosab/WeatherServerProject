@@ -1,39 +1,40 @@
-import Client from 'predicthq';
-import { useEffect, useState } from 'react';
-import { SelectCountry } from "./Components/SelectCountry/SelectCountry"
-import FeatchData from "./Components/FeatchData"
-import { Cards } from "./Components/Cards/Cards";
+
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Navbar } from "./Components/NavbarPages/Navbar"
+import { Home } from "./Components/HomePage/Home";
+import { ChoseCountry } from "./Components/ChosePage/ChoseCountry";
+import React, { useEffect, useRef, useState } from "react";
+import { AllGolbal } from './Components/GlobalVirable/Global';
 function App() {
-  const [nameCountry, setNameCountry] = useState("all");
-  const client = new Client({ access_token: '0XDDfLKqOCeI6-lUsKJ4AhFhicKaz8JwG6wO1-CYyEn6Ss60oE4V2w' });
-  const [dataServer, setDataServer] = useState([]);
-  function nameCountryHandler(data) {
-    setNameCountry(data);
-  }
 
-  function dataServerHandler(data) {
-    // const filtring = data.results.filtr()
-    
-    setDataServer(data.results);
-  }
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Navbar />,
+      children: [
+        {
+          path: "/",
+          element: <Home />
+        },
+        {
+          path: "/chosePage",
+          element: <ChoseCountry />
+        }
+      ]
+    },
+
+  ])
 
 
 
-  useEffect(() => {
-    console.log(nameCountry);
-    if (nameCountry != "" && nameCountry.toLocaleLowerCase() != "all") {
-      FeatchData(`https://api.predicthq.com/v1/events/?category=severe-weather&country=${nameCountry}&limit=50`, dataServerHandler)
-    } else {
-      FeatchData("https://api.predicthq.com/v1/events/?category=severe-weather&sort=-country&state=active&limit=50", dataServerHandler)
-    }
-  }, [nameCountry])
   // console.log(dataServer);
 
 
   return (
     <>
-      <SelectCountry nameCountres={nameCountryHandler}></SelectCountry>
-      <Cards datasServer={dataServer} ></Cards>
+      <AllGolbal>
+        <RouterProvider router={router} />
+      </AllGolbal>
     </>
   );
 }
