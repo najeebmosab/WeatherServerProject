@@ -1,19 +1,19 @@
 import { useEffect, useMemo, useRef, useState, createContext } from 'react';
 import Client from 'predicthq';
 import { Navbar } from '../NavbarPages/Navbar';
+import FeatchData from '../FeatchData';
 
-export const FilterStartInputContext = createContext(null);
-export const FilterEndInputContext = createContext(null);
-export const ArrCardsDataContextContext = createContext(null);
-export const LabelsContext = createContext(null);
-export const NameCountryContext = createContext(null);
 
-export const DataServerContext = createContext([1]);
+export const ArrCardsDataContextContext = createContext();
+export const LabelsContext = createContext();
+export const NameCountryContext = createContext();
 
-export const ClientContext = createContext(null);
-export const WeatherContext = createContext(null);
+export const DataServerContext = createContext();
+export const FlagContext = createContext();
 
-export function AllGolbal() {
+export const ClientContext = createContext();
+
+export function AllGolbal({ children }) {
 
     const filterStartInput = useRef(null);
     const filterEndInput = useRef(null);
@@ -23,6 +23,7 @@ export function AllGolbal() {
     const [nameCountry, setNameCountry] = useState("all");
     const [dataServer, setDataServer] = useState([]);
     const client = new Client({ access_token: '0XDDfLKqOCeI6-lUsKJ4AhFhicKaz8JwG6wO1-CYyEn6Ss60oE4V2w' });
+    const [flag, setFlag] = useState(false);
     const weather = {
         "hail": "snow",
         "winter": "rain",
@@ -36,9 +37,9 @@ export function AllGolbal() {
     };
 
     function filterByWeather() {
-        debugger
+
         const arrWeatherKey = Object.keys(weather);
-        const newArr = dataServer.filter(data => {
+        const newArr = dataServer?.filter(data => {
 
             if (arrWeatherKey.includes(data.labels[0]) && !labels.includes(data.labels[0])) {
                 labels.push(data.labels[0]);
@@ -46,14 +47,15 @@ export function AllGolbal() {
 
             return arrWeatherKey.includes(data.labels[0])
         })
-        console.log(newArr);
+        // console.log(newArr);
         setArr([...newArr])
     }
 
     function filterHandler(event) {
+        debugger
         event.preventDefault();
         if (filterEndInput.current.value == "" && filterStartInput.current.value == "") return;
-        const newArr = dataServer.filter(data => {
+        const newArr = arr.filter(data => {
             const start = new Date(data.start);
             const end = new Date(data.end);
             const inputStart = new Date(filterStartInput.current.value);
@@ -61,7 +63,7 @@ export function AllGolbal() {
             return (Date.parse(start) >= Date.parse(inputStart)) && (Date.parse(end) <= Date.parse(inputEnd))
         }
         );
-        filterByWeather()
+        return setArr([...newArr])
     }
 
     function clearHandler(event) {
@@ -126,14 +128,19 @@ export function AllGolbal() {
         setNameCountry(data);
     }
 
-    function dataServerHandler(data) {
-        // const filtring = data.results.filtr()
+    async function dataServerHandler(data) {
 
-        setDataServer(data.results);
+        await setDataServer([...data.results]);
     }
 
     useEffect(() => {
-        debugger
+        filterByWeather()
+
+    }, [dataServer]);
+
+
+
+    useEffect(() => {
         console.log(nameCountry);
         if (nameCountry != "" && nameCountry.toLocaleLowerCase() != "all") {
             FeatchData(`https://api.predicthq.com/v1/events/?category=severe-weather&country=${nameCountry}&limit=50`, dataServerHandler)
@@ -142,12 +149,18 @@ export function AllGolbal() {
         }
     }, [nameCountry]);
 
+    const state = { arr, location, distance, weather };
 
+    return (<>
+        <ArrCardsDataContextContext.Provider value={state}>
+            <NameCountryContext.Provider value={{ nameCountry, setNameCountry }}>
+                <LabelsContext.Provider value={{ filterStartInput, filterEndInput, labels, filterBySevereWeather, filterHandler, clearHandler }}>
+                <FlagContext.Provider value={{flag,setFlag}}>
+                    {children}
+                    </FlagContext.Provider>
+                </LabelsContext.Provider>
 
-    <DataServerContext.Provider value={dataServer}>
-        <ArrCardsDataContextContext.Provider>
-            <Navbar></Navbar>
+            </NameCountryContext.Provider>
         </ArrCardsDataContextContext.Provider>
-    </DataServerContext.Provider>
-
+    </>)
 }
