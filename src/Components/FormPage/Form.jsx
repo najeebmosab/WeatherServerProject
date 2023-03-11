@@ -1,20 +1,20 @@
 import "./Form.css";
 
-function From() {
+function From(props) {
     return (<>
         <div className="formSearsh">
             <h4>Please Enter Date</h4>
-            <form action="" onSubmit={filterHandler}>
-                <input placeholder="starting Sort from" ref={filterStartInput} type="date" name="" id="" />
-                <input placeholder="Ending Sort to" ref={filterEndInput} type="date" name="" id="" />
+            <form action="" onSubmit={props.filterHandler}>
+                <input placeholder="starting Sort from" ref={props.filterStartInput} type="date" name="" id="" />
+                <input placeholder="Ending Sort to" ref={props.filterEndInput} type="date" name="" id="" />
                 <button >Searsh</button>
-                <button onClick={clearHandler}>clear</button>
+                <button onClick={props.clearHandler}>clear</button>
                 <div>
                     <h2>sort by labels</h2>
-                    <select name="" id="" onChange={filterBySevereWeather}>
+                    <select name="" id="" onChange={props.filterBySevereWeather}>
 
                         {
-                            labels.map((el, idx) => {
+                            props.labels.map((el, idx) => {
                                 return (<option value={el}>{el}</option>)
                             })
                         }

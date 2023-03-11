@@ -1,18 +1,17 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import "./Navbar.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useMemo, useRef, useState,useContext } from 'react';
-import { DataServerContext,AllGolbal } from '../GlobalVirable/Global';
+import { faBars,faXmark } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useMemo, useRef, useState, useContext } from 'react';
+import { FlagContext } from "../GlobalVirable/Global";
 
 function Navbar() {
-    const navBar = useRef(null)
-    const dataServerContext = useContext(DataServerContext)
-    console.log(dataServerContext);
-useEffect(()=>{
-    console.log(dataServerContext);
-
-},[dataServerContext])
+    const navBar = useRef(null);
+    const btn = useRef(null);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const flagContext = useContext(FlagContext);
+    const icon = useRef(null);
     useEffect(() => {
         function handleScroll() {
             // Code to handle scroll event
@@ -26,6 +25,11 @@ useEffect(()=>{
 
             }
         }
+        if (location.pathname === '/chosePage') {
+            dBlock()
+        } else {
+            dNone()
+        }
 
         window.addEventListener('scroll', handleScroll);
 
@@ -34,18 +38,28 @@ useEffect(()=>{
         };
     }, []);
 
+    function dBlock() {
+        btn.current.classList.remove("d-none")
+        navigate("/chosePage", { replace: true });
+
+    }
+
+    function dNone() {
+        btn.current.classList.add("d-none")
+        navigate("/", { replace: true });
+
+    }
+
     return (<>
-    <AllGolbal></AllGolbal>
         <nav className="navBar" ref={navBar}>
             <section>
-                <Link className="navBarHover" to={"/"} >Severe Weather</Link>
-                <Link className="navBarHover" to={"/chosePage"} >Country</Link>
+                <a className="navBarHover" onClick={dNone} >Severe Weather</a>
+                <a className="navBarHover" onClick={dBlock}  >Country</a>
             </section>
             <section>
-                <button className="navBarHover" onClick={() => {
-
-
-                }}><FontAwesomeIcon icon={faBars} /></button>
+                <button ref={btn} className={"navBarHover d-none"} onClick={() => {
+                    flagContext.setFlag(!flagContext.flag);
+                }}><FontAwesomeIcon ref={icon} icon={faBars} /></button>
             </section>
         </nav>
 

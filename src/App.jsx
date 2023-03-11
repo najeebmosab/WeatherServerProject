@@ -4,6 +4,7 @@ import { Navbar } from "./Components/NavbarPages/Navbar"
 import { Home } from "./Components/HomePage/Home";
 import { ChoseCountry } from "./Components/ChosePage/ChoseCountry";
 import React, { useEffect, useRef, useState } from "react";
+import { AllGolbal } from './Components/GlobalVirable/Global';
 function App() {
 
   const router = createBrowserRouter([
@@ -31,8 +32,9 @@ function App() {
 
   return (
     <>
-
-      <RouterProvider router={router} />
+      <AllGolbal>
+        <RouterProvider router={router} />
+      </AllGolbal>
     </>
   );
 }

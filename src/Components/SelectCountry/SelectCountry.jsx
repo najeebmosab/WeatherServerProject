@@ -13,7 +13,7 @@ function SelectCountry(props) {
         </>)
     }
     function getNameCountry(event) {
-        props.nameCountres(event.target.value);
+        props.nameCountryContext.setNameCountry(event.target.value);
     }
     return (<>
         <div className="custom-select">
