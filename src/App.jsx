@@ -5,6 +5,8 @@ import { Home } from "./Components/HomePage/Home";
 import { ChoseCountry } from "./Components/ChosePage/ChoseCountry";
 import React, { useEffect, useRef, useState } from "react";
 import { AllGolbal } from './Components/GlobalVirable/Global';
+import { Ditaeld } from './Components/CRUD/View/Ditaeld';
+import { NewWeather } from './Components/CRUD/AddNewEvent/NewWeather';
 function App() {
 
   const router = createBrowserRouter([
@@ -19,6 +21,14 @@ function App() {
         {
           path: "/chosePage",
           element: <ChoseCountry />
+        },
+        {
+          path: "/WeatherServer",
+          element: <Ditaeld />
+        },
+        {
+          path: "/AddWeatherServer",
+          element: <NewWeather />
         }
       ]
     },

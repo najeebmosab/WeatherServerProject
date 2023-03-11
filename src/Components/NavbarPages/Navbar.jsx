@@ -38,9 +38,9 @@ function Navbar() {
         };
     }, []);
 
-    function dBlock() {
+    function dBlock(locations) {
         btn.current.classList.remove("d-none")
-        navigate("/chosePage", { replace: true });
+        navigate(`/${locations}`, { replace: true });
 
     }
 
@@ -54,7 +54,14 @@ function Navbar() {
         <nav className="navBar" ref={navBar}>
             <section>
                 <a className="navBarHover" onClick={dNone} >Severe Weather</a>
-                <a className="navBarHover" onClick={dBlock}  >Country</a>
+
+                <a className="navBarHover" onClick={()=>{
+                    dBlock("chosePage")
+                }}  >Country</a>
+
+                <a className="navBarHover" onClick={()=>{
+                    dBlock("WeatherServer")
+                }} >Weather Server</a>
             </section>
             <section>
                 <button ref={btn} className={"navBarHover d-none"} onClick={() => {

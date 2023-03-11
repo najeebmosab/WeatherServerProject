@@ -1,0 +1,23 @@
+.mockApiContainer{
+    width: 90%;
+    margin: 20px auto;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-color: #fff;
+    border-radius: 5px;
+    overflow: auto;
+}
+.addDitaeld{
+    float: right;
+    padding: 10px;
+}
+.addDitaeld a{
+    text-decoration: none;
+    color: #222222;
+    cursor: pointer;
+}
+.addDitaeld a:hover{
+    color: rgb(0, 115, 255);
+}
+
+
+
